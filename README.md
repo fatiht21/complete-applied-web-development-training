@@ -1,2 +1,2 @@
 # (120+ Saat) Komple Uygulamalı Web Geliştirme Eğitimi
-## Sıfırdan ileri seviyeye 'Web Geliştirme': Html,Css,Sass,Flexbox,Grid,Bootstrap,Javascript,Angular,Asp.Net Core ve WebApi
+### Kursdaki konu başlıkları sırasıyla; Html, Css, Sass & Scss, Flexbox, Javascript, Angular, Bootstrap ve Asp.Net Core Mvc konu başlıklarıdır.
