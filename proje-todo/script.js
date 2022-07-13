@@ -17,6 +17,15 @@ function displayTasks() {
           <input type="checkbox" id="${gorev.id}" class="form-check-input" />
           <label for="${gorev.id}" class="form-check-label">${gorev.gorevAdi}</label>
         </div>
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-ellipsis"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a onclick="deleteTask(${gorev.id})" class="dropdown-item" href="#"><i class="fa-solid fa-trash-can"></i> Sil</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-pen"></i> Düzenle</a></li>
+          </ul>
+      </div>
   </li>`;
     ul.insertAdjacentHTML("beforeend", li);
   }
@@ -46,4 +55,16 @@ function newTask(event) {
   }
 
   event.preventDefault();
+}
+
+function deleteTask(id) {
+  let deleteId;
+  for (let index in gorevListesi) {
+    if (gorevListesi[index].id == id) {
+      deleteId = index;
+    }
+  }
+
+  gorevListesi.splice(deleteId, 1);
+  displayTasks();
 }
