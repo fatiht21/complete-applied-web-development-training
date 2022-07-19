@@ -7,15 +7,19 @@ let gorevListesi = [
 
 let editId;
 let isEditTask = false;
-let taskInput = document.querySelector("#txtTaskName");
+const taskInput = document.querySelector("#txtTaskName");
+const btnClear = document.querySelector("#btnClear");
 
 displayTasks();
 function displayTasks() {
   let ul = document.getElementById("task-list");
   ul.innerHTML = "";
 
-  for (let gorev of gorevListesi) {
-    let li = `
+  if (gorevListesi.length == 0) {
+    ul.innerHTML = "<p class='p-3 m-3'>Görev Listeniz Boş!</p>";
+  } else {
+    for (let gorev of gorevListesi) {
+      let li = `
   <li class="task list-group-item">
         <div class="form-check">
           <input type="checkbox" id="${gorev.id}" class="form-check-input" />
@@ -31,7 +35,8 @@ function displayTasks() {
           </ul>
       </div>
   </li>`;
-    ul.insertAdjacentHTML("beforeend", li);
+      ul.insertAdjacentHTML("beforeend", li);
+    }
   }
 }
 
@@ -89,3 +94,8 @@ function editTask(taskId, taskName) {
   taskInput.focus();
   taskInput.classList.add("active");
 }
+
+btnClear.addEventListener("click", function () {
+  gorevListesi.splice(0, gorevListesi.length);
+  displayTasks();
+});
