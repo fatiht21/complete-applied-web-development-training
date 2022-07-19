@@ -9,9 +9,10 @@ let editId;
 let isEditTask = false;
 const taskInput = document.querySelector("#txtTaskName");
 const btnClear = document.querySelector("#btnClear");
+const filters = document.querySelectorAll(".filters span");
 
-displayTasks();
-function displayTasks() {
+displayTasks("all");
+function displayTasks(filter) {
   let ul = document.getElementById("task-list");
   ul.innerHTML = "";
 
@@ -20,7 +21,9 @@ function displayTasks() {
   } else {
     for (let gorev of gorevListesi) {
       let completed = gorev.status == "completed" ? "checked" : "";
-      let li = `
+
+      if (filter == gorev.status || filter == "all") {
+        let li = `
   <li class="task list-group-item">
         <div class="form-check">
           <input type="checkbox" onclick="updateStatus(this)" id="${gorev.id}" class="form-check-input" ${completed} />
@@ -36,7 +39,8 @@ function displayTasks() {
           </ul>
       </div>
   </li>`;
-      ul.insertAdjacentHTML("beforeend", li);
+        ul.insertAdjacentHTML("beforeend", li);
+      }
     }
   }
 }
@@ -50,6 +54,14 @@ document
     }
   });
 
+for (let span of filters) {
+  span.addEventListener("click", function () {
+    document.querySelector("span.active").classList.remove("active");
+    span.classList.add("active");
+    displayTasks(span.id);
+  });
+}
+
 function newTask(event) {
   if (taskInput.value == "") {
     alert("görev girmelisiniz");
@@ -60,8 +72,6 @@ function newTask(event) {
         id: gorevListesi.length + 1,
         gorevAdi: taskInput.value,
       });
-      taskInput.value = "";
-      displayTasks();
     } else {
       // güncelleme
       for (let gorev of gorevListesi) {
@@ -71,6 +81,8 @@ function newTask(event) {
         isEditTask = false;
       }
     }
+    taskInput.value = "";
+    displayTasks(document.querySelector("span.active").id);
   }
 
   event.preventDefault();
@@ -85,7 +97,7 @@ function deleteTask(id) {
   }
 
   gorevListesi.splice(deleteId, 1);
-  displayTasks();
+  displayTasks(document.querySelector("span.active").id);
 }
 
 function editTask(taskId, taskName) {
@@ -98,7 +110,7 @@ function editTask(taskId, taskName) {
 
 btnClear.addEventListener("click", function () {
   gorevListesi.splice(0, gorevListesi.length);
-  displayTasks();
+  displayTasks("all");
 });
 
 function updateStatus(selectedTask) {
@@ -115,7 +127,7 @@ function updateStatus(selectedTask) {
 
   for (let gorev of gorevListesi) {
     if (gorev.id == selectedTask.id) {
-      gorev.durum = durum;
+      gorev.status = status;
     }
   }
 }
