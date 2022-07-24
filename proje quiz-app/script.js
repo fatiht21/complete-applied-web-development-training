@@ -1,9 +1,6 @@
 // OOP: Nesne Tabanlı Programlama
 // Object
 
-// Sınıf, Constructor => nesne * 30
-// ES5, ES6, ES7
-
 function Soru(soruMetni, cevapSecenekleri, dogruCevap) {
   this.soruMetni = soruMetni;
   this.cevapSecenekleri = cevapSecenekleri;
@@ -40,6 +37,7 @@ let sorular = [
 function Quiz(sorular) {
   this.sorular = sorular;
   this.soruIndex = 0;
+  this.dogruCevapSayisi = 0;
 }
 
 Quiz.prototype.soruGetir = function () {
@@ -63,6 +61,9 @@ document.querySelector(".next_btn").addEventListener("click", function () {
     document.querySelector(".next_btn").classList.remove("show");
   } else {
     console.log("Quiz bitti!");
+    document.querySelector(".quiz_box").classList.remove("active");
+    document.querySelector(".score_box").classList.add("active");
+    skoruGoster(sorular.length, quiz.dogruCevapSayisi);
   }
 });
 const option_list = document.querySelector(".option_list");
@@ -100,6 +101,7 @@ function optionSelected(option) {
   let soru = quiz.soruGetir();
 
   if (soru.cevabiKontrolEt(cevap)) {
+    quiz.dogruCevapSayisi += 1;
     option.classList.add("correct");
     option.insertAdjacentHTML("beforeend", correctIcon);
   } else {
@@ -110,7 +112,6 @@ function optionSelected(option) {
   for (let i = 0; i < option_list.children.length; i++) {
     option_list.children[i].classList.add("disabled");
   }
-
   document.querySelector(".next_btn").classList.add("show");
 }
 
@@ -118,3 +119,19 @@ function soruSayisiniGoster(soruSirası, toplamSoru) {
   let tag = `<span class="badge bg-warning">${soruSirası} / ${toplamSoru}</span>`;
   document.querySelector(".quiz_box .question_index").innerHTML = tag;
 }
+
+function skoruGoster(toplamSoru, dogruCevap) {
+  let tag = `Toplam ${toplamSoru} sorudan ${dogruCevap} dogru cevap verdiniz`;
+  document.querySelector(".score_box .score_text").innerHTML = tag;
+}
+
+document.querySelector(".btn_quit").addEventListener("click", function () {
+  window.location.reload();
+});
+
+document.querySelector(".btn_replay").addEventListener("click", function () {
+  quiz.soruIndex = 0;
+  quiz.dogruCevapSayisi = 0;
+  document.querySelector(".btn_start").click();
+  document.querySelector(".score_box").classList.remove("active");
+});
