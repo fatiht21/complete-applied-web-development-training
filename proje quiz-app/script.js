@@ -13,24 +13,24 @@ Soru.prototype.cevabiKontrolEt = function (cevap) {
 
 let sorular = [
   new Soru(
-    "1- Hangisi js paket yönetim uygulasıdır?",
+    "1- Hangisi Javascript paket yönetim uygulamasıdır?",
     { a: "Node.js", b: "Typescript", c: "Npm", d: "Nuget" },
     "c"
   ),
   new Soru(
-    "2- Hangisi javascript paket yönetim uygulasıdır?",
-    { a: "Node.js", b: "Typescript", c: "Npm" },
-    "c"
+    "2- Hangisi Frontend kapsamında değerlendirilmez?",
+    { a: "CSS", b: "HTML", c: "Javascript", d: "SQL" },
+    "d"
   ),
   new Soru(
-    "3- Hangisi javascript paket yönetim uygulasıdır?",
-    { a: "Node.js", b: "Typescript", c: "Npm" },
-    "c"
+    "3- Hangisi Backend kapsamında değerlendirilir?",
+    { a: "Node.js", b: "Typescript", c: "Angular", d: "React" },
+    "a"
   ),
   new Soru(
-    "4- Hangisi javascript paket yönetim uygulasıdır?",
-    { a: "Node.js", b: "Typescript", c: "Npm" },
-    "c"
+    "4- Hangisi Javascript programlama dilini kullanmaz?",
+    { a: "React", b: "Asp.Net", c: "Vue", d: "Angular" },
+    "b"
   ),
 ];
 
@@ -48,6 +48,7 @@ const quiz = new Quiz(sorular);
 
 document.querySelector(".btn_start").addEventListener("click", function () {
   document.querySelector(".quiz_box").classList.add("active");
+  startTimer(10);
   soruGoster(quiz.soruGetir());
   soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
   document.querySelector(".next_btn").classList.remove("show");
@@ -56,11 +57,14 @@ document.querySelector(".btn_start").addEventListener("click", function () {
 document.querySelector(".next_btn").addEventListener("click", function () {
   if (quiz.sorular.length > quiz.soruIndex + 1) {
     quiz.soruIndex += 1;
+    clearInterval(counter);
+    startTimer(10);
+    document.querySelector(".time_text").textContent = "Kalan Süre:";
     soruGoster(quiz.soruGetir());
     soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
     document.querySelector(".next_btn").classList.remove("show");
   } else {
-    console.log("Quiz bitti!");
+    clearInterval(counter);
     document.querySelector(".quiz_box").classList.remove("active");
     document.querySelector(".score_box").classList.add("active");
     skoruGoster(sorular.length, quiz.dogruCevapSayisi);
@@ -90,13 +94,10 @@ function soruGoster(soru) {
   for (let opt of option) {
     opt.setAttribute("onclick", "optionSelected(this)");
   }
-
-  // for (let opt of option) {
-  //   opt.setAttribute("onclick", "optionSelected(this");
-  // }
 }
-
+let counter;
 function optionSelected(option) {
+  clearInterval(counter);
   let cevap = option.querySelector("span b").textContent;
   let soru = quiz.soruGetir();
 
@@ -135,3 +136,30 @@ document.querySelector(".btn_replay").addEventListener("click", function () {
   document.querySelector(".btn_start").click();
   document.querySelector(".score_box").classList.remove("active");
 });
+
+function startTimer(time) {
+  counter = setInterval(timer, 1000);
+
+  function timer() {
+    document.querySelector(".time_second").textContent = time;
+    time--;
+
+    if (time < 0) {
+      clearInterval(counter);
+
+      document.querySelector(".time_text").textContent = "Süre Bitti!";
+
+      let cevap = quiz.soruGetir().dogruCevap;
+
+      for (let option of option_list.children) {
+        if (option.querySelector("span b").textContent == cevap) {
+          option.classList.add("correct");
+          option.insertAdjacentHTML("beforeend", correctIcon);
+        }
+        option.classList.add("disabled");
+      }
+
+      document.querySelector(".next_btn").classList.add("show");
+    }
+  }
+}
