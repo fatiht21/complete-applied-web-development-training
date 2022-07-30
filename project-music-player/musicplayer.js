@@ -17,10 +17,10 @@ class MusicPlayer {
   }
 
   prev() {
-    if(this.index != 0) {
-        this.index--;
+    if (this.index != 0) {
+      this.index--;
     } else {
-        this.index = this.musisList.length - 1;
+      this.index = this.musisList.length - 1;
     }
   }
 }
