@@ -11,7 +11,7 @@ class Music {
 }
 
 const musisList = [
-  new Music("Boşver", "Nilüfer", "1.jpeg", "1.mp3"),
-  new Music("Bu da geçer mi Sevgilim", "Yalın", "2.jpeg", "2.mp3"),
-  new Music("Aramızda uçurumlar", "Suat Suna", "3.jpeg", "3.mp3"),
+  new Music("Cinematic Time Lapse", "Lexin Music", "1.jpeg", "1.mp3"),
+  new Music("Epicaly", "Lite Saturation", "2.jpeg", "2.mp3"),
+  new Music("Epic Cinematic Trailer", "Pavel Yudin", "3.jpeg", "3.mp3"),
 ];

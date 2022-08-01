@@ -18,6 +18,7 @@ window.addEventListener("load", () => {
   let music = player.getMusic();
   displayMusic(music);
   displayMusicList(player.musisList);
+  isPlayingNow();
 });
 
 function displayMusic(music) {
@@ -45,6 +46,7 @@ const prevMusic = () => {
   let music = player.getMusic();
   displayMusic(music);
   playMusic();
+  isPlayingNow();
 };
 
 const nextMusic = () => {
@@ -52,6 +54,7 @@ const nextMusic = () => {
   let music = player.getMusic();
   displayMusic(music);
   playMusic();
+  isPlayingNow();
 };
 
 const pauseMusic = () => {
@@ -116,7 +119,7 @@ volume.addEventListener("click", () => {
 const displayMusicList = (list) => {
   for (let i = 0; i < list.length; i++) {
     let liTag = `
-            <li
+            <li li-index = '${i}' onclick="selectedMusic(this)"
               class="list-group-item d-flex justify-content-between align-items-center">
               <span>${list[i].getName()}</span>
               <span id="music-${i}" class="badge bg-primary rounded-phill"></span>
@@ -131,3 +134,26 @@ const displayMusicList = (list) => {
     });
   }
 };
+
+const selectedMusic = (li) => {
+  player.index = li.getAttribute("li-index");
+  displayMusic(player.getMusic());
+  playMusic();
+  isPlayingNow();
+};
+
+const isPlayingNow = () => {
+  for (let li of ul.querySelectorAll("li")) {
+    if (li.classList.contains("playing")) {
+      li.classList.remove("playing");
+    }
+
+    if (li.getAttribute("li-index") == player.index) {
+      li.classList.add("playing");
+    }
+  }
+};
+
+audio.addEventListener("ended", () => {
+  nextMusic();
+});
