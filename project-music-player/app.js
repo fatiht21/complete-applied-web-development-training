@@ -54,13 +54,13 @@ const nextMusic = () => {
 
 const pauseMusic = () => {
   container.classList.remove("playing");
-  play.classList = "fa-solid fa-play";
+  play.querySelector("i").classList = "fa-solid fa-play";
   audio.pause();
 };
 
 const playMusic = () => {
   container.classList.add("playing");
-  play.classList = "fa-solid fa-pause";
+  play.querySelector("i").classList = "fa-solid fa-pause";
   audio.play();
 };
 
@@ -91,7 +91,6 @@ let sesDurumu = "sesli";
 volumeBar.addEventListener("input", (e) => {
   const value = e.target.value;
   audio.volume = value / 100;
-  console.log(audio.volume);
   if (value == 0) {
     volume.classList = "fa-solid fa-volume-xmark";
   } else {
